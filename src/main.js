@@ -51,7 +51,6 @@ function triggerSlide(cmd, value) {
     currentSlide.style.visibility = "hidden";
     const shouldBeVisible =
       (cmd === "TOGGLE" && !isVisible) || (cmd !== "TOGGLE" && cmd !== "HIDE");
-
     if (shouldBeVisible) currentSlide.style.visibility = "visible";
   }
 
@@ -65,6 +64,9 @@ function triggerSlide(cmd, value) {
   }
 
   if (cmd === "SHOW") {
+    if (currentSlide) {
+      currentSlide.style.visibility = "hidden";
+    }
     currentSlide = document.querySelector(value);
     opacity = 0.8;
 

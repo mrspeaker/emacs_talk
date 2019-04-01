@@ -106,7 +106,7 @@ bonus: if you're a command line fan ctrl-a ctrl-e, ctrl-s... may seem familiar? 
 [game: finish level]
 
 ** Level 1: Modes and Packages
-if youve made it this far you wonder what youve gained ... memorizing some odd keybinds just to edit some text. designed to scare you away for as long as possible (most people are scared away forever). 
+if you've made it this far you wonder what youve gained ... memorizing some odd keybinds just to edit some text. designed to scare you away for as long as possible (most people are scared away forever). 
 
 Where Emacs starts to shine is in its "Modes".
 
@@ -118,9 +118,9 @@ Magor modes can just agument a file with new functionality, or they can be as bi
 
 [img of modes]
 
-Each of the panes in this window are a different mode. JS2Modo, notes mode, file management mode, weather, tetris mode. hackernews mode.
+Each of the panes in this window are a different mode. JS2Modo, notes mode, file management mode, weather, tetris mode.
 
-Tetris mode is built in. Sooo much stuff is baked into emacs by default.- it has THREEE irc clients built in. THREE! Three web browsers of various capablilites. Two email clients, a spreadsheet, a dungeon crawler text adventures, pong, snake, a news reader,  a couple of hex editors, a VIM emulator!, a bunch of shells and terminals, moonphases, calendars and scheduling, a crazy powerful scientific cacluator, so many mail clients.
+Sooo much stuff is baked into emacs by default.- it has THREEE irc clients built in. THREE! Three web browsers of various capablilites. Two email clients, a spreadsheet, a dungeon crawler text adventures, pong, snake, a news reader,  a couple of hex editors, a VIM emulator!, a bunch of shells and terminals, moonphases, calendars and scheduling, a crazy powerful scientific cacluator, so many mail clients.
 i THINK it has a gopher client. All built in by default.
 
 While I was preparing this talk I thought "i bet it has something that generates morse code. I wrote some text, selected it and type M-x morse and hit tab...
@@ -139,15 +139,20 @@ Standard keybinds make this not insane. Once you've learned the weirdness of key
 
 - install a new package, works how you expect: g refresh eg, n/p... dired c-v/m-v all same. The weird keybinds mostly work the same accross packages. music players
 
-... git (magit), remote file editing (/ftp) , file editing (dired),... edit the directory as if it were a text document: find and replace, scripts
+[dired]
+remote file editing (/ftp) , file editing (dired),... edit the directory as if it were a text document: find and replace, scripts
+
+[example: magit] 
+If you're editing something that happens to be part of a git repository, triggering magit mode gives you an very powerful git commit mode: using all your favourite weird keybinds - move around a repo loking at things. S to stage chunks.... 
+
+hackernew: SAME keybinds!
     
-- awesome = dired (two screens, rename), magit, org mode
 - js = takes some configuration to get your VSCode experience: but convenience has a cost. 
 
 > look at analytics calls from ftp clients, note taking etc. Emacs is too old to disrespect your privacy, and it doens't care about you anywya. : show log of http requests (lil' snitch). Software is tracking you, grinding you down...  it needs to to survive.
 
 its a saucepan, replaces stupid standalong appliences like egg cookers, slapchops .
-Learning new apps is great procrastination that FEELS like doing work - but every new web app/tool/ we use increases complexity in our life and increases the cognitve load we need to use and integrate them. Thanks to modes - you rarely have to leave emacs. bufferes - hundereds of them. You don't close things you just keep working. Move all of your workflows into one tool -no context switching.
+Learning new apps is great procrastination that FEELS like doing work - but every new web app/tool/ we use increases complexity in our life and increases the cognitve load we need to use and integrate them. Thanks to modes - you rarely have to leave emacs.  bufferes - hundereds of them. You don't close things you just keep working. Move all of your workflows into one tool -no context switching. You don't go to the command line, you don't open an app you just keep working.
 
 I don't remember the keyboard shortcut to close emacs. 
 
@@ -184,9 +189,11 @@ narrow to region very useful.
 
 ** Level infinity
 
-It is deep, timeless, and un-master-able rabbit hole. There's so much buried treasure that people use emacs for *decades* and still find new things. Through some simeple statistacl sampling I estimate I know 0.4% of emacs.
+It is deep, timeless, and un-master-able rabbit hole. There's so much buried treasure that people use emacs for *decades* and still find new things. Through some simeple statistacl sampling I estimate I know 0.4% of emacs. 
 
-Start using fewer and fewer tools and thrid-party applications. Sceptical of adding a signup/createing an account.. Move all notes/planning app/ crap into your editor. It's the perfect antidote to giving your information to others. its a tool that is for now. made in 1970 especially for 2020. or whatever year it is now. 
+You can feel the age in it - it's not a new bit software and it shows. There are some efforts to bring it up to date - Remacs is a Rust implementaiton that aims to modernize the internals. But I'm not sure it's needed. Emacs feels like you are exploring a run-down mansion - you migh hurt yourself, but you also might find the room full of reasure.
+
+Start using fewer and fewer tools and thrid-party applications. Sceptical of adding a signup/createing an account.. Move all notes/planning app/ crap into your editor. It's the perfect antidote to giving your information to others.  Shiny things lose their appeal. Make you suspicious. its a tool that is for now. made in 1970 especially for 2020. or whatever year it is now.
  
 [most tech startups could be replaced by an emacs minor mode]
 
