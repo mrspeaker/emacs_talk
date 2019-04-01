@@ -1,0 +1,242 @@
+* Emacs: passable text editor, instrument against our dystopian internet.
+
+** Intro
+Earle Castledine, AKA Mr Speaker: Javascript flâneur, internet flibbertygibbert. Last gave a 20 minute talk at Queens.JS about making games. This was extended into an hour-long piece at Nodevember Conf in Nashville, and finally extended again into a recently-published 500 page book for SitePoint Publishing (HTML5 games: Novice to ninja). I will not be writing a book about Emacs.
+
+[slideshow controlled by super mario and usb controller]
+
+Main points:
+- You should need less tools that do more work - every extra tool is extra complexity and extra cognitive load
+- Fads are not neutral - and text editors, most software,  are fads
+- Emacs predicted our current mess, and is the perfect tool to combat it
+
+** Prelude
+[Game fades in as character runs to the right] 
+
+everything about the future is about making our lives easier. More convenient. As developers we were gifted a bunch of free coins made our lives easier - first came dom libraries, the rise of the user experience best practises. Followed by linters and other tools... things were so much better than the clunky web forms of the past. Then things that looked a lot like free coins, and made our lives easier...  CDNS to make things faster, package managers, simple analytics for A/B testing, frameworks. 
+
+The free coins ran out but we kept running forward cause everyth so convenient. we failed to appreciate how valuable extreme human profiling was.
+
+FRamweorks (that also used their own cdns and analytics), monitoring and helpdesk software that ... and no longer just websites - dinstinction between our dev tools and other apps are blurred. constantly check "for security updateS", require logins just to start them for convenient syncing and cloud deploying blah blah blah.  collecting far more than anyone needs or uses. Just in case.
+
+We didn't know it, but we outsourced our development pain and to the mythical third party provider (hail 3rd party providers). In exchange for convenience, they collect it all. logging and targeting and gamifying and monetizing. They know more about your app usage than you do, they know more about you than the people who provide your apps do.
+
+[its a trap]
+
+Everything that makes your life easier has a cost. the user experince - everythign so convinenet. YOur life is too convenient. Eerything is too easy. You should be suspicious. cyberpunk future didn't look like this. It looked tough and ugly and functional, not superficially beautiful and tracking the shit out of you. 
+
+"Life is pain, anyone telling you differnlty is tryign to sell you something".
+
+[reload]
+Didn't have to be like this, it still doesnt. THer's another path. (I'll take jquery with me though)
+
+[Running back, Stallman appears, pointin upwards to dark path]
+
+... go back, a lot of sharp edges - lot of weridness. Nothing evil. barely concieved of such things.
+
+Started good, but evil chipped away. Stallman warned us, but we didn't listen. I didn't listen. I thought I could use non-free tools in a responsible way. I thought everythign was inherently good. Or at least neutral. 
+
+Death by 1000 cuts, lured by convenience, and "Great user experience", and buitfiul interfaces... all papering over the tiny evil underneath. ... but not all is lost.  in the background this whole time, the software we deserve
+
+Stallman defined an manifesto against the current internet. The defining peice of software that resulted from it was called Emacs. Passable text editor, instrument against our dystopian internet.
+
+[Splash screen]
+
+it's antisocial. it's ugly (by default). it's user-hostile (by default). But it can't be comercialized or corrupted. It lives simulataneously in the past and the future.
+it's an instrument. An instrument that's really hard to play, only you will like the songs you make with it. And people will get sick of you going on and on about it. Like bieing a jazz musician.
+
+[Press start]
+
+** Level 0: Editing Text
+[slide: level 0, editing text]
+"You're talking about a text editor, right?" you might be saying. If you know anything at all about emacs, you probably know it's a text editor. If you know nothing, then the common understanding of emacs is that it's a text edtor. You'll often hear it in the phrase "tabs vs spaces, emacs vs vim". I'm not doing a bike-shedding talk around *text editing*, omg what a boring waste of time. 
+
+[slide: picture of stove-top popcorn]
+
+Who cares what text edtor you use?.... luckily, emacs is not a text edtior. Well, it is, but emacs is a text editor in the same way a saucepan is a popcorn maker.
+
+#+BEGIN_EXAMPLE
+Venn:  (text ed circle should be tiny, eamcs encompanses most of "all other software")
+   --------- -------------
+ -/       --X-            \--
+/        /    \    all       \
+(  text ( emacs)   other      )
+\   ed   \    /   softwar    /
+ -\       --X-     ever   /--
+   --------- -------------
+
+#+END_EXAMPLE
+
+Before we get into the good stuff, we'll start at the begining. Technically Emacs IS a text editor. And by default it's a really ugly one that's almost impossible to use. 
+
+[screen shot of default emacs, with logo]
+
+Yes, that's actually the Emacs logo. This is the first impression they actually decided to give you when you install Emacs. Don't be fooled - this is your first test. Emacs does everything in its power to inhibit potential new users and test your resolve. 
+
+It's ugliness is also a feature - you're forced to learn a lot about the editor trying to make it look better. If you succeeed, then that's half the battle right there.
+
+[screen shot of my current setup (with js, speedbar)]
+
+So you've figured out how to make thing look acceptable, ... then you've made things passable, it's time to edit some text. "ha ha, Sure" says the Emacs gatekeepers... "First just figure out how to move the cursor around..."  Not so fast - you first have to learn to move the cursor around...
+
+[screen shot of keybaord commands]
+c-v, m-v, c-l --- (some standard ones that will reappear in the modes section)
+c-d, m-d - delete char/word
+c-k kill whole linef
+
+Yes, to move around you use the handy ctrl + f-b-n-p keys. Hard to believe that WASD became more popular. Everything has ludcrious keybinds - a bunch of them you have to memorize. Others you just have to look up everytime. Accordingly they made a really powerful help system - that should give you a clue about it's usability.
+
+[Kill and yank] 
+
+ctrl-w to cut (kill), ctrl-y to (yank)... kill to the kill ring, and yank FROM the kill ring back into the page. Seriously. WHY, why would they not use standard tings? BECUASE cut & paste did not exist when emacs was invented. it didn't exist!
+
+Like JavaScript, once you understand and forgive the historical WATs, you see that that many other WATs are actually very interesting features.  It can do everything you expect , but also has a tonne of really cool tricks up it's sleeve. that "kill ring" becoes a history of past cuts - go around cutting stuff, pasting it somewhere else (instead of cut, paste, select both parts, cut again...) . 
+
+the weird keybinds turn out to be not so weird: home row.  the arrow keys are the devil. You're not supposed to touch your mouse.
+
+Can do extreme code-golfing shenaigans, I won't bore you with too many examples but I'll just show one : code narrowing ... narrow, make edits - search and replace only workis in here
+
+go somewhere, cut... go somewhere paste c-u spc to pop back
+
+[expand-region + code narrowing eg]
+
+bonus: if you're a command line fan ctrl-a ctrl-e, ctrl-s... may seem familiar? [[https://tiswww.cwru.edu/php/chet/readline/readline.html][GNU Readline]] Library - now that you've learned emacs, you can move around the command line! same tings! including the kill ring. Once you're good at emacs, then long lines of commandline become much easier to mess around with.
+[Readline]
+
+[game: finish level]
+
+** Level 1: Modes and Packages
+if youve made it this far you wonder what youve gained ... memorizing some odd keybinds just to edit some text. designed to scare you away for as long as possible (most people are scared away forever). 
+
+Where Emacs starts to shine is in its "Modes".
+
+Modes define the behavior of the current documnet.
+
+A Major mode is... additionally a file can have many "minor" modes - like behaviours that can also run. Range from a JavaScript IDE mode, to ftp mode,
+
+Magor modes can just agument a file with new functionality, or they can be as big as entire applicatoins. 
+
+[img of modes]
+
+Each of the panes in this window are a different mode. JS2Modo, notes mode, file management mode, weather, tetris mode. hackernews mode.
+
+Tetris mode is built in. Sooo much stuff is baked into emacs by default.- it has THREEE irc clients built in. THREE! Three web browsers of various capablilites. Two email clients, a spreadsheet, a dungeon crawler text adventures, pong, snake, a news reader,  a couple of hex editors, a VIM emulator!, a bunch of shells and terminals, moonphases, calendars and scheduling, a crazy powerful scientific cacluator, so many mail clients.
+i THINK it has a gopher client. All built in by default.
+
+While I was preparing this talk I thought "i bet it has something that generates morse code. I wrote some text, selected it and type M-x morse and hit tab...
+
+[-.--/./.../--..-- -/...././.-./. ../...!]
+
+Major modes
+- org: agenda/note taking/todo list/book writing mega mode.
+- m-x hackernews
+  -> show a screen scrapw with m-x ewww.
+remote editing, using dwim - renaming
+
+What is the point of this kitchen-sink approach? Why would I want a built-in todo app when I can get a beautiful user-friendly, cloud-synced, a/b tested shiny one from the App Store?
+
+Standard keybinds make this not insane. Once you've learned the weirdness of keys, you apply that knowedge to ALL of these modes. It's an operating sytem  where most programs are the same program. And none of them will track you.
+
+- install a new package, works how you expect: g refresh eg, n/p... dired c-v/m-v all same. The weird keybinds mostly work the same accross packages. music players
+
+... git (magit), remote file editing (/ftp) , file editing (dired),... edit the directory as if it were a text document: find and replace, scripts
+    
+- awesome = dired (two screens, rename), magit, org mode
+- js = takes some configuration to get your VSCode experience: but convenience has a cost. 
+
+> look at analytics calls from ftp clients, note taking etc. Emacs is too old to disrespect your privacy, and it doens't care about you anywya. : show log of http requests (lil' snitch). Software is tracking you, grinding you down...  it needs to to survive.
+
+its a saucepan, replaces stupid standalong appliences like egg cookers, slapchops .
+Learning new apps is great procrastination that FEELS like doing work - but every new web app/tool/ we use increases complexity in our life and increases the cognitve load we need to use and integrate them. Thanks to modes - you rarely have to leave emacs. bufferes - hundereds of them. You don't close things you just keep working. Move all of your workflows into one tool -no context switching.
+
+I don't remember the keyboard shortcut to close emacs. 
+
+** Level 100: Means of Combination
+- Ok so we've establised that emacs is overflowing with stff...  should use all the built in stuff and we're done? Noooo... emacs is about you. not using other people's stuff. The mountain of built in stuff is just a guide -  na collection of components ready to be combined and extended and rewritten
+
+- incredibly stateful: change everythgng... big ball of clay. introspect state
+- C-h c -> get command info, sleect: see code. Own, library, native.
+- see hte code for everything. change and execute in place. Add to your init.el file, and it's permanetn
+;; Move lines up/down with M-p and M-n - write this live?
+
+emacs defaults are often terrible... learnign to fix the terrible things is how you learn emacs and how you get confident to change everything.
+
+Macros
+
+** Bonus round: Org mode
+
+If tonight is the first time you've heard of Emacs as more than just another text editor, then please: don't go home and try it out. It's not a decision you should make of the back of a queens.js talk.
+
+If now you're thinking to yourself "don't  tell me what to do, I am going to try it.", then that was a test and you passed. Give it a shot, but I'd recommend trying it out as a way to replace your existing note-taking system, "todo" system - via ORG mode. Org mode is kind of a gateway drug to emacs. It's much easier to be diplitated writing text notes than code that you're being paid to write.
+
+It supports ToDo items, deadlines and
+time stamps, which magically appear in the diary listing of the Emacs
+calendar.  Tables are easily created with a built-in table editor.
+Plain text URL-like links connect to websites, emails (VM), Usenet
+messages (Gnus), BBDB entries, and any files related to the project.
+For printing and sharing of notes, an Org-mode file (or a part of it)
+can be exported as a structured ASCII, markdown, or HTML file.
+
+M-x artist mode: draw some lines... use it to draw the levels for this game. 
+agenda, todos, exec code in BEGIN_SRC blocks
+
+narrow to region very useful.
+
+** Level infinity
+
+It is deep, timeless, and un-master-able rabbit hole. There's so much buried treasure that people use emacs for *decades* and still find new things. Through some simeple statistacl sampling I estimate I know 0.4% of emacs.
+
+Start using fewer and fewer tools and thrid-party applications. Sceptical of adding a signup/createing an account.. Move all notes/planning app/ crap into your editor. It's the perfect antidote to giving your information to others. its a tool that is for now. made in 1970 especially for 2020. or whatever year it is now. 
+ 
+[most tech startups could be replaced by an emacs minor mode]
+
+--- the way you use apps inside emacs does vary, but the way you find out how they vary is consistent - help system. RTFM is the only way. You can find everything if you dig hard enough. If you were stuck on a desert island (or wifi-free long-haul flight) and could only take one bit of software - that bit of software MUST be emacs.
+
+nobody should own your dev tools... they should be free, and battle tested
+
+[Get to end screen...]
+
+How many modes built-in? Lets just say Emacs suits people who are more confortable in choas than in order. Do you have 50 tabs opened at the same time? Is your destkop littered iwth files, including a folder called "Desktop" that contains more misc files also with a folder called "destkop"? Emacs is like this but for folders, files, and applications
+
+
+
+Emacs is a box full of paradox: it's clunky and elegant, it's ugly and beautiful, it's archaeic and ahead of its time. It's the kind of tool we all need right now, but it can never be one people use.
+
+But for now, ignore everything ive said. Emacs is not something you can be told about. You have to discover it for yourself.
+
+[Richard stallman particle effect]
+
+
+* ---- other ---
+A couple of years ago I found a grey hair on my head... 6 months ago the first appeared in my stubble. By chance, Microsoft purchased GitHub which meant they also just purchased my go-to text editor, Atom. Atom was already starting to feel the  ... 1976 I was born, in the same year Richard Stallman created emacs.
+
+notepad => homesite => notepad++  => textmate => vim? nope... sublime => atom => vscode? nope... => emacs. 20 years wasting my time. 20 years of half-arsing it.  I will be using emacs on the day i die.
+...  was Atom, but I saw the world moving to VSCode so I decided not to fight it and learned emacs
+
+conveninece is hte enemy of progress.
+
+
+
+
+Before I started using emacs I thought I could touch type. Emacs showed me that I could touch type this regex /[a-zA-Z0-9]/ and that's about it. - so you think you can touch type?
+> gets harder and harder the tireder you get. 
+> my laptop has some weird hardware bug - which makes it extra fun.
+
+
+** Two sides
+
+| good  | evil            | neutral (therefore evil) |
+|-------+-----------------+--------------------------|
+| emacs | facebook        | text editors             |
+| irc   | analytics       |                          |
+|       | app stores      |                          |
+|       | slack           |                          |
+|       | Social networks |                          |
+
+
+The other day I noticed my blog was taking a long time to load - looked at it. Over 5Mb of non-essential http requests-  5 different third parties, including setting cookies on doubleclick. I was giving all the details of anyone who read my blog to random companies, thinking I wasn't tracking them at all. How did I let this happen? How did we get here?
+
+
+
+        
+This is a talk about emacs. Even though you can't be told what emacs is, you have to discover it for yoursef. Kind of like Monads. And like monads - when you discoverd ahve to do a talk about it, even though it's pointless because no one can be told. Especially in just 20 minutes.
