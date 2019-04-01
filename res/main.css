@@ -1,0 +1,35 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #1f3b44;
+    font-family: Helvetica, "Trebuchet MS", Verdana, sans-serif;
+}
+
+#game {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#slides {
+    opacity: 1;
+    text-align: center;
+}
+
+#container .slide {
+    overflow: hidden;
+    font-size: 6vw;
+    color: #eee;
+    background-color: #111;
+    visibility: hidden;
+    border-radius: 0.5vw;
+    top: 1em;
+    left: 1em;
+    right: 1em;
+    bottom: 1em;
+    position: absolute;
+    box-shadow: 0 0 1vw #fff;
+    padding: 1vw;
+}
