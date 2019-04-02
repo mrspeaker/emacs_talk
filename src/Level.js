@@ -277,7 +277,7 @@ class Level extends Phaser.Scene {
 
     if (axes[6] > 0.2) {
       if (!pressed.dpadR) {
-        console.log("pg up");
+        this.nextLevel(true);
         pressed.dpadR = true;
       }
     } else pressed.dpadR = false;

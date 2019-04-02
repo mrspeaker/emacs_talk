@@ -1,8 +1,15 @@
+@font-face {
+  font-family: 'Emulogic';
+  src: ('res/emulogic.ttf') format('truetype'),
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
     margin: 0;
     padding: 0;
     background-color: #1f3b44;
-    font-family: Helvetica, "Trebuchet MS", Verdana, sans-serif;
+    font-family: Emulogic, sans-serif;
 }
 
 #game {
@@ -21,7 +28,7 @@ body {
 #container .slide {
     overflow: hidden;
     font-size: 6vw;
-    color: #eee;
+    color: #efefef;
     background-color: #111;
     visibility: hidden;
     border-radius: 0.5vw;

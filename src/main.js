@@ -104,6 +104,8 @@ fetch("res/levels.org")
         () => {
           const nextLevel = level + 1;
           triggerSlide("HIDE");
+          currentSlide = null;
+
           setTimeout(() => {
             loadLevel(nextLevel);
           }, 400);
