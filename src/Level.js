@@ -40,7 +40,8 @@ class Level extends Phaser.Scene {
       OPACITY_DOWN: "W",
       OPACITY_UP: "E",
       VIDEO_PLAY: "A",
-      VIDEO_REWIND: "S"
+      VIDEO_REWIND: "S",
+      NEXT_LEVEL: "D"
     };
 
     controls.cursors = input.keyboard.createCursorKeys();
@@ -53,7 +54,11 @@ class Level extends Phaser.Scene {
 
     const keys = input.keyboard.addKeys(keyset);
     Object.keys(keyset).map(k => {
-      input.keyboard.on(`keydown-${keyset[k]}`, () => this.triggerSlide(k));
+      input.keyboard.on(`keydown-${keyset[k]}`, () => {
+        if (k === "NEXT_LEVEL") {
+          this.nextLevel();
+        } else this.triggerSlide(k);
+      });
     });
 
     const tx = 16;
@@ -275,12 +280,12 @@ class Level extends Phaser.Scene {
       }
     } else pressed.dpadL = false;
 
-    if (axes[6] > 0.2) {
-      if (!pressed.dpadR) {
-        this.nextLevel(true);
-        pressed.dpadR = true;
-      }
-    } else pressed.dpadR = false;
+    // if (axes[6] > 0.2) {
+    //   if (!pressed.dpadR) {
+    //     this.nextLevel(true);
+    //     pressed.dpadR = true;
+    //   }
+    // } else pressed.dpadR = false;
 
     if (axes[7] < -0.2) {
       if (!pressed.dpadU) {
