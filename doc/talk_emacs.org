@@ -149,10 +149,10 @@ Emacs is a plain old saucepan that replaces a million shiny standalone applience
 
 You just live in Emacs. I don't remember the keyboard shortcut to close it. 
 
-** WIP Level 100: Means of Combination, Means of Abstraction
-- Ok so we've establised that emacs is overflowing with stff...  should use all the built in stuff and we're done? Noooo... emacs is about you. not using other people's stuff. The mountain of built in stuff is just a guide -  na collection of components ready to be combined and extended and rewritten
+** DONE Level 100: DIY
+Everything in emacs is meant to be customized. To faciliate this, the almost the entire system is written in Lisp and is interpreted as you use it.
 
-- incredibly stateful: change everythgng... big ball of clay. introspect state. Code is mostly emacs lisp. everythign is modifieable
+The editor is a ball of mutable state, and it's LISp all the way down. The keybinds I showed you earlier all execute lisp functions. If you want to write your own functionality for the eidtor you can use these functions in your own scripts.
 
 [init.el] unlike most - your setting/profile file is lisp instructions. If you want to change a setting, execute some lisp in the environement. If you want to keep the settings, addit to your emacs file to be executed on launch. IT's lisp all the way down
 
@@ -164,10 +164,6 @@ wehn I talked about keybinds earlier I said that C-f was move forward a characte
 ;; Move lines up/down with M-p and M-n - write this live?
 
 emacs defaults are often terrible... learnign to fix the terrible things is how you learn emacs and how you get confident to change everything.
-
-Extend this fruther
-[bitcoin price]
-  -> show a screen scrapw with m-x ewww.
 
 Macros
 [macros]
@@ -201,6 +197,7 @@ The most powerful aspect I've found is that I've started using fewer and fewer e
 [Game goes back to start, showing "FUTURE>"]
 
 So, choose wisely! Nobody should control your dev tools, and nobody needs to be tracking your every move - no matter how convenient the product. Perhaps try making things a bit harder on yourself and give emacs a go!
+
 
 * ---- scrap ---
 A couple of years ago I found a grey hair on my head... 6 months ago the first appeared in my stubble. By chance, Microsoft purchased GitHub which meant they also just purchased my go-to text editor, Atom. Atom was already starting to feel the  ... 1976 I was born, in the same year Richard Stallman created emacs.
