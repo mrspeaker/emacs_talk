@@ -2,11 +2,12 @@ import Phaser from "../lib/phaser.js";
 import Mario from "./Mario.js";
 
 const Tiles = {
-  BLANK: 23
-};
-
-const pressed = {
-  b: false
+  COIN: 16,
+  COIN_SPIN: 17,
+  STAR: 33,
+  BLANK: 23,
+  STONE: 20,
+  BRICK: 22
 };
 
 class Level extends Phaser.Scene {
@@ -17,17 +18,18 @@ class Level extends Phaser.Scene {
     this.triggerSlide = triggerSlide;
     this.nextLevel = nextLevel;
     this.controls = controls;
+    this.pressed = {};
   }
   preload() {
-    const { level } = this;
+    const { level, load } = this;
 
     Object.values(level.params)
-      .filter(v => v.type === "res")
-      .map(v => this.load.image(v.value, `res/${v.value}`));
-    this.load.image("castle2", "res/castle2.png");
-    this.load.image("trap", "res/trap.png");
-    this.load.image("itsatrap", "res/itsatrap.png");
-    this.load.spritesheet("mario", "res/mario.png", {
+      .filter(({ type }) => type === "res")
+      .map(({ value }) => load.image(value, `res/${value}`));
+
+    load.image("trap", "res/trap.png");
+    load.image("itsatrap", "res/itsatrap.png");
+    load.spritesheet("mario", "res/mario.png", {
       frameWidth: 16,
       frameHeight: 16
     });
@@ -70,7 +72,7 @@ class Level extends Phaser.Scene {
     this.anims.create({
       key: "coin",
       frames: this.anims.generateFrameNumbers("mario", {
-        frames: [16, 17]
+        frames: [Tiles.COIN, Tiles.COIN_SPIN]
       }),
       frameRate: 10,
       repeat: -1
@@ -81,13 +83,6 @@ class Level extends Phaser.Scene {
       y: "-= 100",
       repeat: -1
     });
-    /*{
-      key: "mario",
-      frame: 16,
-      repeat: 11,
-      setXY: { x: 64, y: 13 * 16, stepX: 30 }
-    });
-    this.add.existing(stars);*/
 
     const playerStart = { x: 0, y: 0 };
     const levelEnd = { x: 0, y: 0 };
@@ -102,11 +97,11 @@ class Level extends Phaser.Scene {
         switch (tile) {
           case "#":
             solid = true;
-            frame = 20;
+            frame = Tiles.STONE;
             break;
           case "O":
             solid = true;
-            frame = 22;
+            frame = Tiles.BRICK;
             break;
           case "X":
             solid = true;
@@ -124,7 +119,7 @@ class Level extends Phaser.Scene {
             triggers.push({ type: "trap", x: xo, y: yo });
             break;
           case "$":
-            const coin = coins.create(xo, yo, "mario", 16);
+            const coin = coins.create(xo, yo, "mario", Tiles.COIN);
             coin.play("coin");
 
             break;
@@ -133,7 +128,7 @@ class Level extends Phaser.Scene {
             if (t) {
               const type = t.type;
               if (type === "slide") {
-                const star = stars.create(xo, yo, "mario", 33);
+                const star = stars.create(xo, yo, "mario", Tiles.STAR);
                 star._slide = t.value;
               }
               if (type === "res") {
@@ -236,22 +231,30 @@ class Level extends Phaser.Scene {
     this.keys = keys;
   }
 
-  addTrigger(x, y, f) {
-    const trigger = this.physics.add.staticSprite(x, y, "mario", Tiles.BLANK);
+  addTrigger(x, y, func) {
+    const { physics, player } = this;
 
-    this.physics.add.overlap(this.player, trigger, (a, b) => {
+    const trigger = physics.add.staticSprite(x, y, "mario", Tiles.BLANK);
+
+    physics.add.overlap(player, trigger, (a, b) => {
       b.destroy();
-      f.call(this);
+      func.call(this);
     });
   }
 
   update() {
-    const { player, controls } = this;
+    const { player, controls, pressed } = this;
+
+    // TODO: wrap controls so Mario doesn't need to know
+    // details of keys/gamepads
+    player.update(controls);
+
+    // Handle slide actions with gamepad
     const { pad } = controls;
-    player.update();
     if (!pad) return;
     const { buttons, axes } = pad;
 
+    // TODO: wrap buttons/axes
     if (buttons[1].pressed) {
       if (!pressed.b) {
         this.triggerSlide("TOGGLE");
@@ -279,13 +282,6 @@ class Level extends Phaser.Scene {
         pressed.dpadL = true;
       }
     } else pressed.dpadL = false;
-
-    // if (axes[6] > 0.2) {
-    //   if (!pressed.dpadR) {
-    //     this.nextLevel(true);
-    //     pressed.dpadR = true;
-    //   }
-    // } else pressed.dpadR = false;
 
     if (axes[7] < -0.2) {
       if (!pressed.dpadU) {

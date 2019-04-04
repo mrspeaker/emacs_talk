@@ -1,16 +1,13 @@
 import Phaser from "../lib/phaser.js";
 
 class Mario extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, controls) {
+  constructor(scene, x, y) {
     super(scene, x, y, "mario", 6 * 16 + 1);
     scene.add.existing(this);
     scene.physics.add.existing(this);
-    //xthis.setVelocity(Math.random() * 120 + 100, 200);
-    //this.setBounce(1, 1);
-    this.controls = controls;
   }
-  update() {
-    const { controls, player, body } = this;
+  update(controls) {
+    const { player, body } = this;
     const { cursors, pad } = controls;
 
     if (body.onFloor()) {
@@ -24,7 +21,6 @@ class Mario extends Phaser.Physics.Arcade.Sprite {
 
     const right = cursors.right.isDown || (pad && pad.axes[0] > 0.2);
     const left = cursors.left.isDown || (pad && pad.axes[0] < -0.2);
-
     if (right) {
       this.setVelocityX(100);
       this.flipX = false;
