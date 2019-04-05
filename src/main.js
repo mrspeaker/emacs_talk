@@ -14,6 +14,13 @@ fetch("res/levels.org")
   .then(levelParser)
   .then(data => loadLevel(0, data));
 
+// Check if the initial slide has a video
+const vid = $slides.querySelector(".slide:target video");
+if (vid) {
+  controls.video = vid;
+  triggerSlide("VIDEO_TOGGLE");
+}
+
 const game = new Phaser.Game({
   type: Phaser.AUTO,
   width: 320,
@@ -43,6 +50,7 @@ window.addEventListener("gamepadconnected", e => {
 });
 
 function triggerSlide(cmd, value) {
+  $slide = $slide || document.querySelector(".slide:target");
   if ($slide) {
     const isVisible =
       window.getComputedStyle($slide).getPropertyValue("visibility") ===
@@ -69,12 +77,7 @@ function triggerSlide(cmd, value) {
       opacity = 0.9;
 
       setTimeout(() => {
-        // TODO: moving the show/hide to css via #anchor links
-        // Basic version works, but need to get TOGGLE working
-        // document.location.href = value;
-        // history.replaceState({}, value, value);
-
-        $slide.style.visibility = "visible";
+        window.location.replace(value);
         $slides.style.opacity = opacity;
 
         // Check if the slide has a video

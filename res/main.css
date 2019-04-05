@@ -36,7 +36,10 @@ body {
     font-size: 6vw;
     color: #efefef;
     background-color: #111;
+
     visibility: hidden;
+    opacity: 0.9;
+
     border-radius: 0.5vw;
     top: 1em;
     left: 1em;
