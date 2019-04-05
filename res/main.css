@@ -47,6 +47,10 @@ body {
     padding: 1vw;
 }
 
+.slide:target {
+    visibility: visible;
+}
+
 .slide img, .slide video {
     width: 100%;
     height: 100%;

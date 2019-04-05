@@ -61,6 +61,10 @@ function triggerSlide(cmd, value) {
       opacity = 0.9;
 
       setTimeout(() => {
+        // TODO: moving the show/hide to css via #anchor links
+        // Basic version works, but need to get TOGGLE working
+        document.location.href = value;
+
         $slide.style.visibility = "visible";
         $slides.style.opacity = opacity;
 
