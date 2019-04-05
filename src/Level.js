@@ -10,6 +10,15 @@ const Tiles = {
   BRICK: 22
 };
 
+const Keyset = {
+  TOGGLE: "Q",
+  OPACITY_DOWN: "W",
+  OPACITY_UP: "E",
+  VIDEO_TOGGLE: "A",
+  VIDEO_REWIND: "S",
+  NEXT_LEVEL: "D"
+};
+
 class Level extends Phaser.Scene {
   constructor(name, data, triggerSlide, nextLevel, controls) {
     super(name);
@@ -37,15 +46,6 @@ class Level extends Phaser.Scene {
   create() {
     const { level, triggerSlide, controls, input } = this;
 
-    const keyset = {
-      TOGGLE: "Q",
-      OPACITY_DOWN: "W",
-      OPACITY_UP: "E",
-      VIDEO_PLAY: "A",
-      VIDEO_REWIND: "S",
-      NEXT_LEVEL: "D"
-    };
-
     controls.cursors = input.keyboard.createCursorKeys();
 
     // Phaser gamepad handling seems flaky across scenes... rolling my own instead.
@@ -54,9 +54,9 @@ class Level extends Phaser.Scene {
     //   controls.gamepad = pad;
     // });
 
-    const keys = input.keyboard.addKeys(keyset);
-    Object.keys(keyset).map(k => {
-      input.keyboard.on(`keydown-${keyset[k]}`, () => {
+    const keys = input.keyboard.addKeys(Keyset);
+    Object.keys(Keyset).map(k => {
+      input.keyboard.on(`keydown-${Keyset[k]}`, () => {
         if (k === "NEXT_LEVEL") {
           this.nextLevel();
         } else this.triggerSlide(k);
@@ -226,9 +226,7 @@ class Level extends Phaser.Scene {
     camera.startFollow(this.player);
     camera.setDeadzone(100, 100);
     camera.setBounds(-8, -8, level.w * tx, level.h * ty);
-
     camera.fadeFrom(500, 0, 0, 0, true);
-    this.keys = keys;
   }
 
   addTrigger(x, y, func) {
@@ -285,7 +283,7 @@ class Level extends Phaser.Scene {
 
     if (axes[7] < -0.2) {
       if (!pressed.dpadU) {
-        this.triggerSlide("VIDEO_PLAY");
+        this.triggerSlide("VIDEO_TOGGLE");
         pressed.dpadU = true;
       }
     } else pressed.dpadU = false;

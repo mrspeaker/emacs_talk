@@ -13,9 +13,6 @@ const config = {
     mode: Phaser.Scale.STRETCH,
     autoCenter: Phaser.Scale.CENTER_BOTH
   },
-  input: {
-    gamepad: true
-  },
   render: {
     transparent: true
   },
@@ -27,22 +24,24 @@ const config = {
   }
 };
 
-let currentSlide;
 let opacity = 1;
 const controls = {};
+
+let $slide;
 const $slides = document.querySelector("#slides");
 
+// Phaser's `input { gamepad: true }` support flaky across scenes so rolling my own.
 window.addEventListener("gamepadconnected", e => {
   console.log("Gamepad connected");
   controls.pad = e.gamepad;
 });
 
 function triggerSlide(cmd, value) {
-  if (currentSlide) {
-    const isVisible = currentSlide.style.visibility === "visible";
+  if ($slide) {
+    const isVisible = $slide.style.visibility === "visible";
     const shouldBeVisible =
       (cmd === "TOGGLE" && !isVisible) || (cmd !== "TOGGLE" && cmd !== "HIDE");
-    currentSlide.style.visibility = shouldBeVisible ? "visible" : "hidden";
+    $slide.style.visibility = shouldBeVisible ? "visible" : "hidden";
   }
 
   switch (cmd) {
@@ -55,30 +54,33 @@ function triggerSlide(cmd, value) {
       $slides.style.opacity = opacity;
       break;
     case "SHOW":
-      if (currentSlide) {
-        currentSlide.style.visibility = "hidden";
+      if ($slide) {
+        $slide.style.visibility = "hidden";
       }
-      currentSlide = document.querySelector(value);
+      $slide = document.querySelector(value);
       opacity = 0.9;
 
       setTimeout(() => {
-        currentSlide.style.visibility = "visible";
+        $slide.style.visibility = "visible";
         $slides.style.opacity = opacity;
 
         // Check if the slide has a video
-        const vid = currentSlide.querySelector("video");
+        const vid = $slide.querySelector("video");
         if (vid) {
           controls.video = vid;
-          triggerSlide("VIDEO_PLAY");
+          triggerSlide("VIDEO_TOGGLE");
         }
       }, 100);
       break;
     case "HIDE":
       break;
-    case "VIDEO_PLAY":
+    case "VIDEO_TOGGLE":
       if (controls.video) {
-        if (controls.video.paused) controls.video.play();
-        else controls.video.pause();
+        if (controls.video.paused) {
+          controls.video.play();
+        } else {
+          controls.video.pause();
+        }
       }
       break;
     case "VIDEO_REWIND":
@@ -103,7 +105,7 @@ fetch("res/levels.org")
         () => {
           const nextLevel = level + 1;
           triggerSlide("HIDE");
-          currentSlide = null;
+          $slide = null;
 
           setTimeout(() => {
             loadLevel(nextLevel);
@@ -113,10 +115,12 @@ fetch("res/levels.org")
       );
 
       // TODO: shouldn't be handling scenes like this.
+      // but Phaser3 docs are hard to understand xD
       if (level > 0) {
         game.scene.remove("level" + (level - 1));
       }
       game.scene.add("level" + level, scene, true);
     };
+
     loadLevel(0);
   });
