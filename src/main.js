@@ -29,65 +29,64 @@ const config = {
 
 let currentSlide;
 let opacity = 1;
-let history = [];
 const controls = {};
-
 const $slides = document.querySelector("#slides");
 
 window.addEventListener("gamepadconnected", e => {
-  console.log(
-    "Gamepad connected at index %d: %s. %d buttons, %d axes.",
-    e.gamepad.index,
-    e.gamepad.id,
-    e.gamepad.buttons.length,
-    e.gamepad.axes.length
-  );
+  console.log("Gamepad connected");
   controls.pad = e.gamepad;
 });
 
 function triggerSlide(cmd, value) {
   if (currentSlide) {
     const isVisible = currentSlide.style.visibility === "visible";
-    currentSlide.style.visibility = "hidden";
     const shouldBeVisible =
       (cmd === "TOGGLE" && !isVisible) || (cmd !== "TOGGLE" && cmd !== "HIDE");
-    if (shouldBeVisible) currentSlide.style.visibility = "visible";
+    currentSlide.style.visibility = shouldBeVisible ? "visible" : "hidden";
   }
 
-  if (cmd === "OPACITY_UP") {
-    opacity = Math.min(1, opacity + 0.1);
-    $slides.style.opacity = opacity;
-  }
-  if (cmd === "OPACITY_DOWN") {
-    opacity = Math.max(0.1, opacity - 0.1);
-    $slides.style.opacity = opacity;
-  }
-
-  if (cmd === "SHOW") {
-    if (currentSlide) {
-      currentSlide.style.visibility = "hidden";
-    }
-    currentSlide = document.querySelector(value);
-    opacity = 0.8;
-
-    setTimeout(() => {
-      currentSlide.style.visibility = "visible";
+  switch (cmd) {
+    case "OPACITY_UP":
+      opacity = Math.min(1, opacity + 0.1);
       $slides.style.opacity = opacity;
-
-      const vid = currentSlide.querySelector("video");
-      if (vid) {
-        controls.video = vid;
+      break;
+    case "OPACITY_DOWN":
+      opacity = Math.max(0.1, opacity - 0.1);
+      $slides.style.opacity = opacity;
+      break;
+    case "SHOW":
+      if (currentSlide) {
+        currentSlide.style.visibility = "hidden";
       }
-    }, 100);
-    history.push(currentSlide);
-  }
-  if (cmd === "VIDEO_PLAY" && controls.video) {
-    if (controls.video.paused) controls.video.play();
-    else controls.video.pause();
-  }
-  if (cmd === "VIDEO_REWIND" && controls.video) {
-    controls.video.pause();
-    controls.video.currentTime = 0;
+      currentSlide = document.querySelector(value);
+      opacity = 0.9;
+
+      setTimeout(() => {
+        currentSlide.style.visibility = "visible";
+        $slides.style.opacity = opacity;
+
+        // Check if the slide has a video
+        const vid = currentSlide.querySelector("video");
+        if (vid) {
+          controls.video = vid;
+          triggerSlide("VIDEO_PLAY");
+        }
+      }, 100);
+      break;
+    case "HIDE":
+      break;
+    case "VIDEO_PLAY":
+      if (controls.video) {
+        if (controls.video.paused) controls.video.play();
+        else controls.video.pause();
+      }
+      break;
+    case "VIDEO_REWIND":
+      if (controls.video) {
+        controls.video.pause();
+        controls.video.currentTime = 0;
+      }
+      break;
   }
 }
 
@@ -112,25 +111,12 @@ fetch("res/levels.org")
         },
         controls
       );
-      if (level > 0) game.scene.remove("level" + (level - 1));
+
+      // TODO: shouldn't be handling scenes like this.
+      if (level > 0) {
+        game.scene.remove("level" + (level - 1));
+      }
       game.scene.add("level" + level, scene, true);
     };
     loadLevel(0);
-    //    setTimeout(() => {
-    //    const canvas = scene.sys.canvas;
-    //  const
-    //    fullscreen = scene.sys.game.device.fullscreen;
-    // https://codepen.io/samme/pen/deKZjx?editors=0110
-    //    }, 200);
   });
-
-/*
-  const particles = this.add.particles("mario");
-  const emitter = particles.createEmitter({
-    speed: 100,
-    scale: { start: 1, end: 0 },
-    blendMode: "ADD"
-  });
-*/
-
-//  emitter.startFollow(logo);
