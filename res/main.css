@@ -9,7 +9,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #000;
-    pp: #1f3b44;
+    color: #fff;
     font-family: Emulogic, sans-serif;
 }
 
@@ -64,4 +64,12 @@ body {
     position: absolute;
     right: 5px;
     top: 0;
+}
+
+#help {
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    font-size: 7pt;
+    color: #444;
 }
