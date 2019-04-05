@@ -2,7 +2,19 @@ import Phaser from "../lib/phaser.js";
 import levelParser from "./levelParser.js";
 import Level from "./Level.js";
 
-const config = {
+const controls = {};
+
+const $slides = document.querySelector("#slides");
+let $slide;
+let opacity = 1;
+
+// Load up the level data
+fetch("res/levels.org")
+  .then(r => r.text())
+  .then(levelParser)
+  .then(data => loadLevel(0, data));
+
+const game = new Phaser.Game({
   type: Phaser.AUTO,
   width: 320,
   height: 240,
@@ -22,13 +34,7 @@ const config = {
       gravity: { y: 1000 }
     }
   }
-};
-
-let opacity = 1;
-const controls = {};
-
-let $slide;
-const $slides = document.querySelector("#slides");
+});
 
 // Phaser's `input { gamepad: true }` support flaky across scenes so rolling my own.
 window.addEventListener("gamepadconnected", e => {
@@ -38,7 +44,9 @@ window.addEventListener("gamepadconnected", e => {
 
 function triggerSlide(cmd, value) {
   if ($slide) {
-    const isVisible = $slide.style.visibility === "visible";
+    const isVisible =
+      window.getComputedStyle($slide).getPropertyValue("visibility") ===
+      "visible";
     const shouldBeVisible =
       (cmd === "TOGGLE" && !isVisible) || (cmd !== "TOGGLE" && cmd !== "HIDE");
     $slide.style.visibility = shouldBeVisible ? "visible" : "hidden";
@@ -63,7 +71,8 @@ function triggerSlide(cmd, value) {
       setTimeout(() => {
         // TODO: moving the show/hide to css via #anchor links
         // Basic version works, but need to get TOGGLE working
-        document.location.href = value;
+        // document.location.href = value;
+        // history.replaceState({}, value, value);
 
         $slide.style.visibility = "visible";
         $slides.style.opacity = opacity;
@@ -96,35 +105,27 @@ function triggerSlide(cmd, value) {
   }
 }
 
-fetch("res/levels.org")
-  .then(r => r.text())
-  .then(levelParser)
-  .then(data => {
-    const game = new Phaser.Game(config);
-    const loadLevel = level => {
-      const scene = new Level(
-        "level" + level,
-        data[level % (data.length - 1)],
-        triggerSlide,
-        () => {
-          const nextLevel = level + 1;
-          triggerSlide("HIDE");
-          $slide = null;
+const loadLevel = (level, data) => {
+  const scene = new Level(
+    "level" + level,
+    data[level % (data.length - 1)],
+    triggerSlide,
+    () => {
+      const nextLevel = level + 1;
+      triggerSlide("HIDE");
+      $slide = null;
 
-          setTimeout(() => {
-            loadLevel(nextLevel);
-          }, 400);
-        },
-        controls
-      );
+      setTimeout(() => {
+        loadLevel(nextLevel, data);
+      }, 400);
+    },
+    controls
+  );
 
-      // TODO: shouldn't be handling scenes like this.
-      // but Phaser3 docs are hard to understand xD
-      if (level > 0) {
-        game.scene.remove("level" + (level - 1));
-      }
-      game.scene.add("level" + level, scene, true);
-    };
-
-    loadLevel(0);
-  });
+  // TODO: shouldn't be handling scenes like this.
+  // but Phaser3 docs are hard to understand xD
+  if (level > 0) {
+    game.scene.remove("level" + (level - 1));
+  }
+  game.scene.add("level" + level, scene, true);
+};
