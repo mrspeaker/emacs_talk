@@ -24,10 +24,17 @@ class Level extends Phaser.Scene {
     super(name);
     this.name = name;
     this.level = data;
-    this.triggerSlide = triggerSlide;
     this.nextLevel = nextLevel;
     this.controls = controls;
     this.pressed = {};
+
+    this.commands = Object.assign(
+      ...Object.keys(Keyset).map(k => ({ [k]: () => triggerSlide(k) })),
+      { SHOW: slideId => triggerSlide("SHOW", slideId) },
+      { HIDE: () => triggerSlide("HIDE") },
+      { NEXT_LEVEL: () => this.nextLevel() },
+      { RELOAD: () => location.reload() }
+    );
   }
   preload() {
     const { level, load } = this;
@@ -56,11 +63,7 @@ class Level extends Phaser.Scene {
 
     const keys = input.keyboard.addKeys(Keyset);
     Object.keys(Keyset).map(k => {
-      input.keyboard.on(`keydown-${Keyset[k]}`, () => {
-        if (k === "NEXT_LEVEL") {
-          this.nextLevel();
-        } else this.triggerSlide(k);
-      });
+      input.keyboard.on(`keydown-${Keyset[k]}`, () => this.commands[k]());
     });
 
     const tx = 16;
@@ -169,9 +172,7 @@ class Level extends Phaser.Scene {
       stars,
       (a, b) => {
         stars.remove(b);
-        const slideId = b._slide;
-        if (!slideId) return;
-        triggerSlide("SHOW", slideId);
+        this.commands["SHOW"](b._slide);
 
         this.add.tween({
           targets: [b],
@@ -241,7 +242,7 @@ class Level extends Phaser.Scene {
   }
 
   update() {
-    const { player, controls, pressed } = this;
+    const { player, controls, pressed, commands } = this;
 
     // TODO: wrap controls so Mario doesn't need to know
     // details of keys/gamepads
@@ -252,52 +253,56 @@ class Level extends Phaser.Scene {
     if (!pad) return;
     const { buttons, axes } = pad;
 
+    const cmds = [];
+
     // TODO: wrap buttons/axes
     if (buttons[1].pressed) {
       if (!pressed.b) {
-        this.triggerSlide("TOGGLE");
+        cmds.push(commands.TOGGLE);
         pressed.b = true;
       }
     } else pressed.b = false;
 
     if (buttons[4].pressed) {
       if (!pressed.l1) {
-        this.triggerSlide("OPACITY_UP");
+        cmds.push(commands["OPACITY_UP"]);
         pressed.l1 = true;
       }
     } else pressed.l1 = false;
 
     if (buttons[5].pressed) {
       if (!pressed.r1) {
-        this.triggerSlide("OPACITY_DOWN");
+        cmds.push(commands["OPACITY_DOWN"]);
         pressed.r1 = true;
       }
     } else pressed.r1 = false;
 
     if (axes[6] < -0.2) {
       if (!pressed.dpadL) {
-        this.nextLevel();
+        cmds.push(commands["NEXT_LEVEL"]);
         pressed.dpadL = true;
       }
     } else pressed.dpadL = false;
 
     if (axes[7] < -0.2) {
       if (!pressed.dpadU) {
-        this.triggerSlide("VIDEO_TOGGLE");
+        cmds.push(commands["VIDEO_TOGGLE"]);
         pressed.dpadU = true;
       }
     } else pressed.dpadU = false;
 
     if (axes[7] > 0.2) {
       if (!pressed.dpadD) {
-        this.triggerSlide("VIDEO_REWIND");
+        cmds.push(commands["VIDEO_REWIND"]);
         pressed.dpadD = true;
       }
     } else pressed.dpadD = false;
 
     if (buttons[8].pressed) {
-      location.reload();
+      cmds.push(commands["RELOAD"]);
     }
+
+    cmds.forEach(c => c());
   }
 }
 
