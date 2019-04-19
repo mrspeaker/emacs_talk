@@ -78,6 +78,7 @@ function triggerSlide(cmd, value) {
 
       setTimeout(() => {
         window.location.replace(value);
+        $slide.style.visibility = "visible";
         $slides.style.opacity = opacity;
 
         // Check if the slide has a video
