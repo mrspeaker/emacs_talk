@@ -10,6 +10,9 @@ Main points:
 - Fads are not neutral - and text editors, most software,  are fads
 - Emacs predicted our current mess, and is the perfect tool to combat it
 
+*** TO CHANGE FOR NEXT TIME:
+really highlight the fact you have everything just opened all the time - don't open it when you need something, you live in it. Switch to whatever you're working on now (don't use anything else for anything if you can avoid it).
+
 ** DONE Prelude
 [Game fades in as Mario runs to the right towards spinning coins on the ground] 
 
